@@ -1,0 +1,328 @@
+\documentclass[a4paper, 12pt]{book}
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{times}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel} %comentar linea si tu memoria es en ingles.
+\usepackage{url}
+%\usepackage[dvipdfm]{graphicx}
+\usepackage{graphicx}
+\usepackage{float} %% H para posicionar figuras
+\usepackage[nottoc, notlot, notlof, notindex]{tocbibind} %% Opciones de indice.
+\usepackage{latexsym} %% Logo de LaTeX
+\usepackage{multirow} %% Para las tablas
+\usepackage{pdfpages}
+
+\title{Memoria del Proyecto}
+\author{Nombre del autor}
+
+\renewcommand{\baselinestretch}{1.5} %%Interlineado
+
+\begin{document}
+
+\renewcommand{\refname}{Bibliografía}  %%Renombrado
+\renewcommand{\appendixname}{Apéndice}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PORTADA
+
+\begin{titlepage}
+\begin{center}
+\begin{tabular}[c]{c c}
+
+\includegraphics[scale=0.25]{img/logo_vect.png}&
+\begin{tabular}[b]{l}
+\Huge
+\textsf{UNIVERSIDAD}  \\
+\Huge
+\textsf{REY JUAN CARLOS} \\
+\end{tabular}
+\\
+\end{tabular}
+
+\vspace{3cm}
+
+\large
+GRADO EN INGENIER\'IA DE SISTEMAS AUDIOVISUALES Y MULTIMEDIA
+
+\vspace{0.4CM}
+
+\large
+Curso Acad\'emico 2019/2020
+
+\vspace{0.8cm}
+Trabajo Fin de Grado
+
+\vspace{2.5cm}
+
+\large
+IMPLEMENTACI\'ON DE UN PLUGIN DE VISUALIZACI\'ON EN REALIDAD VIRTUAL EN KIBANA
+\vspace{4cm}
+
+\large
+Autor: Andrea Villaverde Hern\'andez
+\\Huge
+Tutor: Dr. Jes\'us Mar\'ia Gonzalez Barahona
+\end{center}
+\end{titlepage}
+
+\newpage
+\mbox{}
+\thispagestyle{empty} % para que no se enumere la página
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIRMAS
+
+\clearpage
+\pagenumbering{gobble}
+\chapter*{}
+
+\vspace{-4cm}
+\begin{center}
+\large
+\textbf{Trabajo Fin de Grado}
+
+\vspace{1cm}
+\large
+IMPLEMENTACI\'ON DE UN PLUGIN DE VISUALIZACI\'ON EN REALIDAD VIRTUAL EN KIBANA
+
+\vspace{1cm}
+\large
+\textbf{Autor :} Andrea Villaverde Hern\'andez \\
+\textbf{Tutor :} Dr. Jes\'us Mar\'a Gonzalez Barahona
+
+\end{center}
+
+\vspace{1cm}
+La defensa del presente Proyecto Fin de Grado se realiz\'o el d\'ia \qquad$\;\,$ de \qquad\qquad\qquad\qquad \newline de 2020, siendo calificada por el siguiente tribunal:
+
+\vspace{0.5cm}
+\textbf{Presidente:}
+
+\vspace{1.2cm}
+\textbf{Secretario:}
+
+\vspace{1.2cm}
+\textbf{Vocal:}
+
+\vspace{1.2cm}
+y habiendo obtenido la siguiente calificaci\'on:
+
+\vspace{1cm}
+\textbf{Calificaci\'on:}
+
+
+\vspace{1cm}
+\begin{flushright}
+Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 2020
+\end{flushright}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEDICATORIA
+
+\chapter*{}
+\pagenumbering{Roman} % para comenzar la numeracion de paginas en números romanos.
+\begin{flushright}
+\textit{Dedicado a \\ 
+todos aqu\'ellos que \\
+nunca se rindieron.}
+\end{flushright}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AGRADECIMIENTOS
+
+\chapter*{Agradecimientos}
+\markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} %Encabezado
+
+Gracias a...
+
+\textit{<<If you can dream it, you can do it.>> - Walter Elias Disney}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RESUMEN
+
+\chapter*{Resumen}
+\markboth{RESUMEN}{RESUMEN} %Encabezado
+
+Este proyecto...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RESUMEN EN INGLÉS
+
+\chapter*{Summary}
+\markboth{SUMMARY}{SUMMARy} %Encabezado
+
+This...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ÍNDICES %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Lo índices se generan automáticamente
+% Solo hay que comentar/descomentar la instrucción de LaTeX.
+
+%%%% Índice de contenidos
+\tableofcontents
+%%%% Índice de figuras
+\cleardoublepage
+\listoffigures % lista de figuras
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INTRODUCCION %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cleardoublepage
+\chapter{Introducci\'on}
+\label{sec:intro} %etiqueta para referenciar luego ~\ref{sec:intro}
+\pagenumbering{arabic} %para empezar enumeracion con numeros
+
+% hablar sobre los objetivos del proyecto
+
+\section{El problema}
+\label{sec:ElProblema}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONTEXTO Y TECNOLOGIAS USADAS %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cleardoublepage
+\chapter{Contexto y tecnolog\'ias utilizadas}
+\label{sec:tecno} %etiqueta para referenciar luego 
+
+% motivaciones y hablar sobre las herramientas
+
+%%%%%%%%%%%%%%%
+%HTML5
+%%%%%%%%%%%%%%%
+
+\section{HTML5}
+\label{sec:html5}
+\subsection{Definici\'on}
+\subsection{En este proyecto}
+
+%%%%%%%%%%%%%%%
+%JAVASCRIPT
+%%%%%%%%%%%%%%%
+
+\section{JavaScript}
+\label{sec:js}
+\subsection{Definici\'on}
+\subsection{En este proyecto}
+
+%%%%%%%%%%%%%%%%
+%AFRAME
+%%%%%%%%%%%%%%%
+
+\section{A-Frame}
+\label{sec:aframe}
+\subsection{Definici\'on}
+A-frame es un framework web que permite la creaci\'on de experiencias VR (Realidad Virtual). Desarrollado por Mozilla pensado para implementar contenido VR a nuestra web de manera sencilla, sin la necesidad de instalar nada. Se trata de un proyecto de C\'odigo Abierto, por lo que ha sido muy bien recibido en las comunidades VR.
+
+A primera vista, A-frame parece de f\'acil manejo; pues permite la creaci\'on de escenarios 3D utilizando simple etiquetas HTML. Pero no todo esto se queda aqu\'i, pues es un poderoso framework de entity-component que viene dado por su fichero three.js.
+
+A-Frame soporta dispositivos de VR como Vive, Rift, Daydream, Gear VR o Cardboard.
+Adem\'as, gracias a dispositivos de tracking y controladores de posici\'on, permite sumergirse en experiencias VR en escenarios a 360\textsuperscript{\underline{o}}.
+\subsubsection{Caracter\'isticas}
+\begin{itemize}
+\item \underline{Crea VR de forma sencilla}: simplemente utilizando las etiquetas <<script>> y <<a-scene>> podr\'as crear un escenario 3D con toda la configuraci\'on para VR, de forma predeterminada, sin la necesidad de instalar nada.
+\item \underline{Declaraciones en HTML}: al estar basado en HTML es muy f\'acil de usar ya seas desarrollador web, amante del VR, artista, dise~nador, educador o ni~no.
+\item \underline{VR Multiplataforma}: permite usar los diferentes dispositivos con sus respectivos controladores. En caso de no disponer de ninguno, tambi\'en se puede usar en port\'atiles, tablets o tel\'efonos  m\'oviles.
+\item \underline{Arquitectura Entity-Component}: A-frame es un poderoso framework donde se provee de una poderosa estructura entity-component. Al tratarse de HTML, los desarrolladores tienen acceso ilimitado a javascript, DOM API, three.js, WebVR y WebGL.
+\item \underline{Rendimiento}: A-Frame est\'a optimizado desde cero para WebVR. Como A-Frame usa el DOM, sus elementos no tocan el motor del navegador. Los objetos 3D se actualizan en la memoria con una sola llamada ``requestAnimationFrame".
+\item \underline{Tool Agnostic}: como la web se crea en HTML, A-frame es compatible con la mayor\'ia de las bibliotecas y herramientas web tales como React, Preact, Vue.js, d3,js, Ember.js y jQuery.
+\item \underline{Inspector Visual}: A-frame proporciona un visor 3D incorporado. En la que permite abrir la escena 3D y modificar algunos de sus elementos.
+\item \underline{Registro}: al igual que Unity Assets Store, a-Frame recopila componentes para que los desarrolladores puedan publicar y buscarlos de forma sencilla.
+\item \underline{Componentes}: con a-Frame se puede correr geometr\'ias, luces, materiales, animaciones, modelos, sombras, audios, texto, etc (adem\'as de los controladores para los dispositivos). Adem\'as de, gracias a su comunidad, sistemas de part\'iculas, f\'isicas, multijugador, aguas, monta~nas, reconocimiento de voz y un gran etc\'etera.
+\end{itemize}
+\subsection{THREE.JS}
+Es una biblioteca escrita en Javascript que permite la creaci\'on y visualizaci\'on de objetos 3D en entornos web. Es muy convenientes pues permite utilizarse en conjunto con Canvas (HTML5) SVG y WebGL. Por lo que podemos decir que es compatible con cualquier navegador que soporte WebGL.
+
+Adem\'as, permite importar modelos 3D, en formato JSON,  creados en Maya, Blender o Max3D.
+
+\subsection{En este proyecto}
+A-Frame supone una parte importante de este proyecto, pues el objetivo de este proyecto es crear un plugin que permita dar una experiencia VR a la hora de representar la visualizaci\'on de los datos mostrados en Kibana. 
+
+
+%%%%%%%%%%%%%%%%%%%
+% ELASTICSEARCH
+%%%%%%%%%%%%%%%%%%%
+
+\section{ELK}
+\label{sec:elastic}
+\subsection{Definici\'on}
+Es un conjunto de herramientas de gran potencial que ayuda con la administraci\'on de registros, permitiendo monitorizar, consolidar y analizar logs (no siempre son logs) generados en distintos servidores.
+ 
+Estas herramientas son: Elasticsearch, Logstash y Kibana. Las tres se complementan entre s\'i pero, se pueden utilizar de forma independiente.
+
+\subsection{Logstash}
+Es la herramienta encargada de recolectar los logs de una aplicaci\'on, parsearlos; traducirlos y pasarlos a formato JSON para luego poder almacenarla en elasticsearch. 
+
+Esta parte no la utilizaremos en este proyecto en ningún momento.
+
+\subsection{Elasticsearch}
+Se trata de un motor de busqueda y analisis fácilmente escalable. Permite almacenar, buscar y analizar grandes vol\'umenes de datos casi en tiempo real. Se puede acceder de forma sencilla gracias a su elaborada API.
+
+Est\'a escrito en Java, de c\'odigo abierto y generalmente utilizado con fines empresariales o de investigaci\'on.
+\subsubsection{Caracter\'sticas}
+\begin{itemize}
+\item \underline{Documentos}: est\'a orientado a documentos que se insertan en formato JSON, son esquemas sin indexar. Lo que permite una b\'usqueda mucho mas r\'apida.
+\item \underline{API}: cuenta con una potente API muy f\'acil de usar. \'Esta permite hacer peticiones de tipo HTTP.
+\item \underline{Rapidez}: Gracias a su distribuci\'on de escalado din\'amico; elasticsearch encuentra r\'apidamente cualquier consulta que se le haga, incluso cuando tenemos grandes cantidades de datos. Ya sean b\'usquedas simples, como complejas.
+\item \underline{Gran componente}: Elasticsearch junto con Kibana y Logstash forman un conjunto de herramientas perfecta para la recopilaci\'on, an\'alisis y visualizaci\'on de datos.
+\item \underline{En tiempo real}: Las actualizaciones de los \'indices de elasticsearch se realizan de manera tan r\'apida que pr\'acticamente se puede consultar en tiempo real.
+\end{itemize}
+\subsection{En este proyecto}
+Para este proyecto, no es una parte importante; pues solo la utilizaremos para indexar los datos de prueba que vamos a visualizar posteriormente en Kibana.
+
+
+%%%%%%%%%%%%%%%%%%%%
+% KIBANA
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Kibana}
+\label{sec:kibana}
+\subsection{Definici\'on}
+Es una plataforma que permite visualizar los datos almacenados en elasticsearch, para su posterior monitorizaci\'on y an\'alisis de estos desde el propio navegador web.
+
+Al tratarse de c\'odigo abierto, la propia empresa invita a que desarrolladores puedan contribuir con su mejor\'ia o a la creaci\'on, como en nuestro caso, de plugins para personalizarlos al gusto del usuario. 
+\subsubsection{Caracter\'isticas}
+\begin{itemize}
+\item \underline{Visualizaciones}: podemos encontrar representaciones con histogramas, gr\'aficas de tiempo, roscos o tablas que nos permite visualizar e interactuar con los datos almacenados en elasticsearch.
+\item \underline{Datos en tiempo real}: la buena conectividad entre ellos, permite visualizar y buscar la informaci\'on unos pocos segundos despu\'es de ser introducida en elasticsearch.
+\item \underline{Dashboards}: que recogen las visualizaciones en paneles para poder tener una vista global y as\'i poder entender mejor grandes cantidades de datos.
+\item \underline{Geolocalizaci\'on}: en caso de tener datos de ubicaciones; \'esta te muestras las distintas coordenadas en mapas.
+\item \underline{Extras}: tambi\'en incluyen extras como timeseries, graphs o machine learning.
+\end{itemize}
+\subsection{En este proyecto}
+Esta es la base de dicho proyecto, pues lo que queremos es crear un plugin que permita modificar los distintos tipos de visualizaciones en formato 3D, aportando esa experiencia en VR que tanto queremos conseguir.
+
+
+%%%%%%%%%%%%%%%%%%%
+% NODEJS
+%%%%%%%%%%%%%%%%%%%
+
+\section{NodeJS y NPM}
+\label{sec:nodejs}
+\subsection{Definici\'on}
+\subsection{En este proyecto}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DESARROLLO %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cleardoublepage
+\chapter{Desarrollo}
+\label{sec:desarrollo} 
+
+% Desarrollo del plugin
+
+\section{Metodolog\'ia SCRUM}
+\label{sec:scrum}
+
+% Esto va al final de todo.
+\end{document}
