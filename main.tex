@@ -1,11 +1,13 @@
 \documentclass[a4paper, 12pt]{book}
 %\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
+
 
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
 \usepackage{times}
-\usepackage[latin1]{inputenc}
+%\usepackage[latin1]{inputenc}
 \usepackage[spanish]{babel} %comentar linea si tu memoria es en ingles.
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
 \usepackage{url}
 %\usepackage[dvipdfm]{graphicx}
 \usepackage{graphicx}
@@ -14,6 +16,7 @@
 \usepackage{latexsym} %% Logo de LaTeX
 \usepackage{multirow} %% Para las tablas
 \usepackage{pdfpages}
+\usepackage{listings} %% para el codigo
 
 \title{Memoria del Proyecto}
 \author{Nombre del autor}
@@ -50,7 +53,7 @@ GRADO EN INGENIER\'IA DE SISTEMAS AUDIOVISUALES Y MULTIMEDIA
 \vspace{0.4CM}
 
 \large
-Curso Acad\'emico 2019/2020
+Curso Académico 2019/2020
 
 \vspace{0.8cm}
 Trabajo Fin de Grado
@@ -63,7 +66,7 @@ IMPLEMENTACI\'ON DE UN PLUGIN DE VISUALIZACI\'ON EN REALIDAD VIRTUAL EN KIBANA
 
 \large
 Autor: Andrea Villaverde Hern\'andez
-\\Huge
+
 Tutor: Dr. Jes\'us Mar\'ia Gonzalez Barahona
 \end{center}
 \end{titlepage}
@@ -319,10 +322,315 @@ Esta es la base de dicho proyecto, pues lo que queremos es crear un plugin que p
 \chapter{Desarrollo}
 \label{sec:desarrollo} 
 
-% Desarrollo del plugin
+%%%%%%%%%%%%%%%%%%%
+% METODOLOGIA SCRUM
+%%%%%%%%%%%%%%%%%%%
 
 \section{Metodolog\'ia SCRUM}
 \label{sec:scrum}
+
+%%%%%%%%%%%
+% SPRINT 0
+%%%%%%%%%%%
+
+\section{Sprint 0: Investigación e Instalación }
+\label{sec:sprint0}
+
+%%%%%%%%%%%
+% SPRINT 1
+%%%%%%%%%%%
+
+\section{Sprint 1: Plugins Simples }
+\label{sec:sprint1}
+
+%%%%%%%%%%%
+% SPRINT 2
+%%%%%%%%%%%
+
+\section{Sprint 2: Visualización con datos Elasticseach }
+\label{sec:sprint2}
+\subsection{Editor y Schemas}
+Hasta este punto hemos aprendido a crear un plugin simple para kibana e integrarlo con aframe. El siguiente paso será aprender a sacar datos de elasticsearch y poder dibujar un figura de aframe, en este caso un cubo, con las dimensiones que le obtenemos de dichos datos. Para ello, seguiremos los siguiente pasos:
+\begin{enumerate}
+    \item Añadir Editor y Schemas.
+    \item Construir Visualización que muestre datos.
+    \item Integración de Aframe con datos.
+\end{enumerate}
+
+Antes de ponernos a crear una nueva visualización donde nos muestre datos de elasticsearch, necesitamos un editor que nos permita seleccionar los datos que queremos mostrar. 
+
+Comenzaremos creando el diseño de nuestro editor. Kibana nos permite seleccionar dos tipo de datos: metrics y buckets.
+\begin{itemize}
+    \item \underline{metrics:}hace referencia a datos que se pueden calcular, por ejemplo, media, máximo, sumatorio, etc.
+    \item \underline{buckets:}refiere a un conjunto de datos que no se pueden calcular, por ejemplo, fechas, sucursales, tipos, etc.
+\end{itemize}
+
+Como el objetivo final de este sprint es crear una visualización que nos muestre un cubo, determinamos que necesitaremos 3 datos metrics que serán los datos que usaremos para crear las dimensiones del cubo que dibujaremos más adelante.
+
+Estos datos vienen estructurados dentro de Schemas que el propio Kibana permite declarar a la hora de crear la visualización para luego registrarla. Para ello, añadiremos las siguiente líneas en “kbn\_aframe.js”:
+
+Antes de nada, importamos los correspondientes paquetes que nos permite declarar los schemas e indicar el tipo de dato que vamos a usar, en este caso metrics.
+
+\begin{lstlisting}[frame=single]
+import { Schemas } from 'ui/vis/editors/default/schemas';
+import { AggGroupNames } from 'ui/vis/editors/default';
+\end{lstlisting}
+
+Una vez importado, añadiremos nuevos parámetros dentro de la función createBaseVisualization():
+
+\begin{lstlisting}[frame=single]
+schemas: new Schemas([
+        {
+          group: AggGroupNames.Metrics,
+          name: 'x-axis',
+          title: 'X-axis',
+          min: 1,
+          max: 1,
+          aggFilter: ['count', 'avg', 'sum', 'min', 'max', 
+          'cardinality', 'std_dev']
+        },
+        {
+          group: AggGroupNames.Metrics,
+          name: 'y-axis',
+          title: 'Y-axis',
+          min: 1,
+          max: 1,
+          aggFilter: ['count', 'avg', 'sum', 'min', 'max', 
+          'cardinality', 'std_dev']
+        },
+        {
+          group: AggGroupNames.Metrics,
+          name: 'z-axis',
+          title: 'Z-axis',
+          min: 1,
+          max: 1,
+          aggFilter: ['count', 'avg', 'sum', 'min', 'max', 
+          'cardinality', 'std_dev']
+        }
+      ]),
+\end{lstlisting}
+
+Parámetros utilizados:
+\begin{itemize}
+    \item \underline{group:} indica el tipo de dato: metric o bucket.
+    \item \underline{name:} nombre que recibirá el dato.
+    \item \underline{title:} el título que mostrará en el editor.
+    \item \underline{min:} indica el mínimo de datos que tenemos usar.
+    \item \underline{max:} indica el máximo de datos que podemos usar.
+    \item \underline{aggFilter:} aquí podemos indicarle qué tipos de dato, en este caso tipos de métricas, queremos usar.
+\end{itemize}
+
+Al instante de añadir esto, obtenemos como resultado un editor como el que vemos a continuación:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm, keepaspectratio]{img/development/editor-resultado.png}
+  \caption{Resultado del Editor}
+  \label{fig:editor}
+\end{figure}
+
+\subsection{Plugin Simple con datos}
+Ahora que ya podemos elegir los datos en el editor de Kibana, el siguiente paso es conseguir que la visualización muestre dichos datos de forma sencilla.
+
+Para esto debemos haber aprendido, como se vió en el sprint anterior, el funcionamiento de creación y renderizado para entender dónde Kibana recibe los datos de elasticsearch. Así que lo primero que tenemos que hacer es encontrar dónde recibimos los datos que pedimos con el editor.
+
+Si revisamos el esquema del proceso de creación de una visualización (ver capitulo), podemos suponer que los datos que recibimos vendrán en la variable visData. Lo comprobaremos de la siguiente forma:
+
+\begin{lstlisting}[frame=single]
+  render(visData, status) {
+      if (visData) {
+        console.log(visData);
+      }
+\end{lstlisting}
+
+Con esto podremos ver que datos recibimos en la consola del navegador.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm, keepaspectratio]{img/development/captura-visData.png}
+  \caption{Captura de visData en la consola}
+  \label{fig:visData}
+\end{figure}
+Esto nos sirve para analizar en cómo es el formato de los datos recibidos de elasticsearch, para luego extraer los datos que nos interesa mostrar. 
+
+En primer lugar, vemos que se divide en 3 registros: 
+\begin{itemize}
+    \item \underline{type:} tipo del archivo. En este caso, kibana\_datatable.
+    \item \underline{rows:} contiene únicamente los datos obtenidos en formato registro en la que la clave con la forma col-X-X que indica la posición; y el valor con el dato obtenido.
+    \item \underline{columns:} contiene las etiquetas que hacen referencia a los datos obtenidos. Vienen en forma de array de registros, donde el id indica la posición del dato; y el name indica el nombre del valor. 
+\end{itemize}
+Analizando todo esto sacaremos los datos, con sus nombres, para guardarlo en la variable metrics.
+
+\begin{lstlisting}[frame=single]
+     const table = visData;
+     const metrics = [];
+
+      //get metrics
+      table.columns.forEach((column, i) => {
+        var value;
+        const name = column.name;
+        const id = column.id;
+        table.rows.forEach(row => {
+          if (row[id]){
+            value = Math.round(row[id]*100)/100;
+          }
+        });
+
+       metrics.push({
+          name: name,
+          value: value
+        });
+      });
+\end{lstlisting}
+Tras esto, lo añadimos a la visualización, de forma simple, de la siguiente forma:
+\begin{lstlisting}[frame=single]
+      //render metric in vis
+      metrics.forEach((metric, i) => {
+        const metricDiv = document.createElement('div');
+        metricDiv.className = 'myvis-metric-div';
+        metricDiv.innerHTML = `<b>${metric.name}:</b> 
+        ${metric.value}`;
+        metricDiv.setAttribute('style', `font-size: 
+        ${this.vis.params.fontSize}pt`);
+        this.container.appendChild(metricDiv);
+      });
+\end{lstlisting}
+Como resultado obtenemos las figuras, que agregamos anteriormente en el capítulo anterior, seguido de los 3 valores que pedimos desde el editor.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm, keepaspectratio]{img/development/resultado-simple-data.png}
+  \caption{Resultado Visualización con datos}
+  \label{fig:simplewithdata}
+\end{figure}
+
+
+\subsection{Integración de A-frame con datos}
+Ahora que ya hemos aprendido a obtener los datos que pedimos a elasticsearch para incluirlos en nuestra visualización, el siguiente paso es saber añadir estos datos para poder crear las figuras en base a estos datos.
+
+Únicamente nos centraremos en crear el cubo tomando como valores las 3 métricas que pedimos desde el editor. Para ello, tenemos dos opciones:
+\begin{enumerate}
+    \item Insertar los datos al html usando angularJS.
+    \item Crear la figura directamente desde el controller usando a-frame con javascript.
+\end{enumerate}
+Analizando un poco como kibana crea sus visualizaciones predeterminadas, creo que la mejor opción es la segunda y así nos ahorramos tener que usar más bibliotecas.
+
+Por eso, eliminaremos el archivo “index.html”, eliminamos la línea donde importamos dicho archivo y cambiamos la siguiente línea de render():
+
+\begin{lstlisting}[frame=single]
+    this.container.innerHTML = '';
+\end{lstlisting}
+
+Ahora crearemos el escenario justo de donde añadimos las métricas obtenidas de elasticsearch.
+
+\begin{lstlisting}[frame=single]
+     //Creando escenario
+      var escena = document.createElement('a-scene');
+      escena.setAttribute('embedded', true);
+\end{lstlisting}
+
+El siguiente paso será añadir las figuras. Empezaremos por dibujar una esfera usando las primitivas que tiene a-frame. Usaremos los mismos valores que teníamos en “index.html” pero variando algún dato al gusto. Por el momento solo le añadimos los datos de forma manual porque lo único que queremos es probar cómo podemos crear una figura de esta forma.
+
+Lo creamos de la siguiente forma:
+
+\begin{lstlisting}[frame=single]
+     // entity primitive
+      var entidad = document.createElement('a-entity');
+      entidad.setAttribute('geometry', {
+        primitive: 'sphere',
+        radius: 1.25
+      });
+      entidad.setAttribute('position', {
+        x: -2.5,
+        y: 1,
+        z: -5
+      });
+      entidad.setAttribute('material',{
+        color: '#EF2D5E'
+      });
+      entidad.setAttribute('shadow', true);
+
+      escena.appendChild(entidad);
+\end{lstlisting}
+
+Esta última línea, añade la figura en el escenario anteriormente creado.
+
+Ahora que está creado todo la escena con la figura, la añadimos el contenedor de la visualización para que nos la muestre en Kibana.
+
+\begin{lstlisting}[frame=single]
+     this.container.appendChild(escena);
+\end{lstlisting}
+
+Obteniendo como resultado la siguiente visualización.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm, keepaspectratio]{img/development/}
+  \caption{Esfera A-Frame con Javascript}
+  \label{fig:onlysphere}
+\end{figure}
+
+Una vez hemos conseguido que nos dibuje la esfera, haremos el mismo procedimiento para crear el cubo pero con un par de variaciones:
+
+\begin{enumerate}
+    \item Usaremos el cubo que creamos por componente.
+    \item Añadiremos los datos obtenidos de elasticsearch.
+\end{enumerate}
+
+Como usaremos el componente, revisaremos que “box.js” este importado en el controlador.
+
+Ahora, declaramos un array con las dimensiones que vamos a usar para crear el cubo. 
+
+\begin{lstlisting}[frame=single]
+     const axis = [];
+\end{lstlisting}
+Y añadimos los valores en la variable axis tras añadirlo también en metrics.
+\begin{lstlisting}[frame=single]
+       // add axis
+        axis.push(value);
+\end{lstlisting}
+Por último, solo nos queda crear la figura de la misma forma y añadirlo en la escena:
+\begin{lstlisting}[frame=single]
+     // entity con box.js
+      var caja = document.createElement('a-entity');
+      caja.setAttribute('box', {
+        height: axis[0]/10, //0.5
+        width: axis[1]/10, //0.25
+        depth: axis[2]/10, //1
+      });
+      caja.setAttribute('position', {
+        x: 0,
+        y: 1,
+        z: -5
+      });
+      caja.setAttribute('rotation', {
+        x: 0,
+        y: -45,
+        z: 0
+      });
+      caja.setAttribute('material', 'color', '#4CC3D9');
+
+      escena.appendChild(caja);
+\end{lstlisting}
+Como se ve, la diferencia con la esfera es que creamos un a-entity con el atributo ‘box’ y no ‘geometry’ y dándole los datos que declaramos en el constructor de box.js.
+
+Con esto, obtenemos como resultado un cubo que varía en base a los datos que le pedimos a elasticsearch.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm, keepaspectratio]{img/development/box_with_data.png}
+  \caption{Resultado de integración de A-Frame con datos}
+  \label{fig:boxwithdata}
+\end{figure}
+
+%\begin{lstlisting}[frame=single]
+%\end{lstlisting}
+
+%\begin{figure}[H]
+%  \centering
+%  \includegraphics[width=16cm, %keepaspectratio]{img/development/}
+%  \caption{}
+%  \label{fig:}
+%\end{figure}
 
 % Esto va al final de todo.
 \end{document}
