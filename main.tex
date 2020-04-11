@@ -262,11 +262,6 @@ Es un conjunto de herramientas de gran potencial que ayuda con la administraci\'
  
 Estas herramientas son: Elasticsearch, Logstash y Kibana. Las tres se complementan entre s\'i pero, se pueden utilizar de forma independiente.
 
-\subsection{Logstash}
-Es la herramienta encargada de recolectar los logs de una aplicaci\'on, parsearlos; traducirlos y pasarlos a formato JSON para luego poder almacenarla en elasticsearch. 
-
-Esta parte no la utilizaremos en este proyecto en ningún momento.
-
 \subsection{Elasticsearch}
 Se trata de un motor de busqueda y analisis fácilmente escalable. Permite almacenar, buscar y analizar grandes vol\'umenes de datos casi en tiempo real. Se puede acceder de forma sencilla gracias a su elaborada API.
 
@@ -279,9 +274,14 @@ Est\'a escrito en Java, de c\'odigo abierto y generalmente utilizado con fines e
 \item \underline{Gran componente}: Elasticsearch junto con Kibana y Logstash forman un conjunto de herramientas perfecta para la recopilaci\'on, an\'alisis y visualizaci\'on de datos.
 \item \underline{En tiempo real}: Las actualizaciones de los \'indices de elasticsearch se realizan de manera tan r\'apida que pr\'acticamente se puede consultar en tiempo real.
 \end{itemize}
-\subsection{En este proyecto}
+\subsubsection{En este proyecto}
 Para este proyecto, no es una parte importante; pues solo la utilizaremos para indexar los datos de prueba que vamos a visualizar posteriormente en Kibana.
 
+
+\subsection{Logstash}
+Es la herramienta encargada de recolectar los logs de una aplicaci\'on, parsearlos; traducirlos y pasarlos a formato JSON para luego poder almacenarla en elasticsearch. 
+
+Esta parte no la utilizaremos en este proyecto en ningún momento.
 
 %%%%%%%%%%%%%%%%%%%%
 % KIBANA
@@ -314,9 +314,19 @@ Esta es la base de dicho proyecto, pues lo que queremos es crear un plugin que p
 \subsection{Definici\'on}
 \subsection{En este proyecto}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+%BABIAXR
+%%%%%%%%%%%%%%%
+
+\section{BabiaXR}
+\label{sec:babiaxr}
+\subsection{Definici\'on}
+\subsection{En este proyecto}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DESARROLLO %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
 \chapter{Desarrollo}
@@ -333,14 +343,203 @@ Esta es la base de dicho proyecto, pues lo que queremos es crear un plugin que p
 % SPRINT 0
 %%%%%%%%%%%
 
-\section{Sprint 0: Investigación e Instalación }
+\section{Sprint 0: Investigación y Estudio Priliminar }
 \label{sec:sprint0}
+
+Antes de comenzar con el desarrollo, debemos estudiar un poco el funcionamiento de las herramientas con las que vamos a trabajar. Por eso, empezaremos con este sprint, que llamaremos sprint 0 porque uno será un sprint en sí. 
+
+Primero será establecer las herramientas que necesitaremos conocer para llevar a cabo el desarrollo. Como nuestro objetivo es crear un plugin para visualizar gráfica es VR para Kibana, lo ideal sería que conociéramos un poco el funcionamiento de ésta. 
+
+Luego crearemos un entorno de desarrollo para Kibana y documentarse cómo se crean plugins para Kibana.
+
+Por último, jugaremos un poco con la biblioteca Babiaxr para conocer su funcionamiento.
+
+En resumen:
+\begin{enumerate}
+    \item Testearemos el cliente de Kibana.
+    \item Crearemos un entorno de desarrollo.
+    \item Testearemos la biblioteca Babiaxr.
+\end{enumerate}
+
+
+%TESTEANDO CLIENTE KIBANA
+\subsection{Testeando Cliente de Kibana}
+
+Como se ha mencionado antes, lo primero que haremos será testear el cliente de Kibana. Lo que haremos será instalar un elasticsearch, que usaremos para que nos proporcione los datos; y un cliente de Kibana para que exploremos su funcionamiento.
+
+Estas dos herramientas se pueden conseguir de forma gratuita en la web oficial de Elastic. Descargamos las últimas versiones oficiales (versión 7.6) y las instalamos en el propio ordenador. Un dato a tener en cuenta es que ambos deben ser de la misma versión, sino no funcionará (o no funcionará correctamente). Para una primera vez, lo mejor es no tocar la configuración de ninguno de los dos programas.
+
+Anteriormente se mencionó que kibana era una manera de monitorizar los datos recopilados en elasticsearch, pero aunque no tengamos ninguna base de datos en elasticsearch, Kibana nos permitirá descargar unas bases de datos de prueba para que podamos utilizarlo en nuestro testeo. Para esta ocasión utilizaremos la base de datos de eCommerce.
+
+Lo primero que nos encontramos es la pestaña “Discover” que nos muestra una lista de todos los items que hay en la base de datos (en este caso, las ventas que se han realizado). A la izquierda, tenemos un editor que nos permite filtrar los campos que queremos que aparezca en el listado. Además, en la parte de arriba, justo encima de la tabla de datos, hay una gráfica que nos muestra una visualización gráfica de los datos que hemos filtrado, para esta ocasión el número de ventas que se realizan a lo largo del día.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm, keepaspectratio]{img/development/Discover-kibana.png}
+  \caption{Pestaña Discover del cliente de Kibana}
+  \label{fig:kibanadiscover}
+\end{figure}
+
+Una vez que ya hemos comprendido, viéndolo en la pestaña de “Discover”, con que clase de datos trabajamos; pasaremos a ver cómo se crean las visualizaciones. Para ello, iremos a la pestaña “Visualization” y lo primero con lo que nos encontramos es con que, al habernos descargado datos de prueba, ya vienen unas predeterminadas. Antes de ponernos a probar a crear una, lo mejor será coger una de estas predeterminada para entender su funcionamiento.
+
+Esta visualización nos muestra una gráfica tipo Pie que viene configurada para que nos muestre el número de ventas en base al género del cliente, ya sea hombre (MALE) o mujer (FEMALE). A mano izquierda vemos que existe también un editor que nos permite configurar la gráfica. Existen dos pestañas dentro de la misma:
+
+\begin{itemize}
+    \item \underline{Data:} donde configuraremos qué datos queremos que nos muestre, separados entre metrics y buckets (que explicamos más adelante).
+    \item \underline{Options:} como su propio nombre indica, configuraciones opcionales. Por ejemplo, en este caso te permite indicarle donde se desea colocar la leyenda, o si queremos que la gráfica sea rellena o no.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm, keepaspectratio]{img/development/Kibana-visualization-pie.png}
+  \caption{Visualizacion Pie en el cliente de Kibana}
+  \label{fig:kibanapie}
+\end{figure}
+
+Ahora que ya entendemos un poco el funcionamiento de las visualizaciones, pasaremos a crear una propia; pero que sea diferente de la anterior. Por ejemplo, nos interesa ver desde qué países se han realizado las ventas. Elegimos “Create Visualization” y seleccionamos, para este caso, la visualización tipo Table. 
+
+Como no nos queremos complicar mucho, lo único que haremos será pedirle que nos muestre la cantidad de ventas que se han realizado en base a los países. Para ello, vamos en la pestaña “Data” y en metrics le indicamos “Count” que nos mostrará la cantidad de ventas. Y luego “Buckets” que nos los clasifique por país. Para ello, se ha de seleccionar en “Aggregations” la opción de “Terms” y luego en “Field” le indicamos que queremos que sea por nombre de país “geoip.region\_name”. Además, nos permite que lo podamos ordenar de mayor a menor o viceversa; o que solo nos muestre, por ejemplo, los 5 primeros. O incluso, darle una etiqueta a los datos que estamos mostrando.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm, keepaspectratio]{img/development/kibana-table-editor.png}
+  \caption{Creación de Vizualización Table en el cliente de Kibana}
+  \label{fig:kibanatable}
+\end{figure}
+
+Una vez seleccionado cómo queremos nuestra visualización, solo tenemos que darle a “Apply changes” y se actualizará al instante. Y una vez que tengamos la visualización que queremos, simplemente la guardamos dándole a “Save”.
+
+Después de haber probado alguna visualización y haber creado una propia, nos interesa conocer otra sección interesante y es la que encontramos en la pestaña “Dashboard”. En esta, nos encontramos con que ya existe una predeterminada así que, aunque podemos crear una nueva, la editaremos.
+
+Para entenderlo bien, la dashboard nos muestra en una misma página todas las visualizaciones que tenemos creadas y que queremos que sean mostradas. Lo que nos permite en edición es añadir o eliminar visualizaciones, colocarlas en un sitio u otro; o incluso darles el tamaño que nos interese.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm, keepaspectratio]{img/development/kibana-dashboard.png}
+  \caption{Dashboard en el cliente de Kibana}
+  \label{fig:kibanadashboard}
+\end{figure}
+
+
+%CREANDO ENTORNO DE DESARROLLO
+\subsection{Creando el Entorno de Desarrollo}
+
+Ahora que ya entendemos un poco el funcionamiento del cliente de Kibana, pasaremos a crearnos el entorno de desarrollo que utilizaremos para crear nuestro plugin. Este nos permitirá ver en tiempo real los cambios que realicemos.
+
+Siguiendo las indicaciones que podemos encontrar en la sección correspondiente para contribuir en el proyecto (“CONTRIBUTING.md”), dentro del repositorio de kibana.
+
+Una vez tengamos creado nuestro entorno de desarrollo, pasaremos a documentarnos cómo se crean plugin para Kibana. Para ello, elastic no proporciona artículos en su blog de como crear unos plugins básicos. Aunque está un poco obsoleta la documentación, únicamente nos quedaremos con la parte de cómo es la estructura de ficheros.
+
+Por el momento no vamos a detallar el contenido de los ficheros (lo explicaremos más adelante), simplemente nos enfocaremos en qué función tiene cada uno.
+
+Lo primero que haremos será crear un directorio con en nombre de nuestro plugin en “KIBANA\_HOME/plugins”. Dentro de esta habrá dos ficheros:
+
+\begin{itemize}
+    \item \underline{package.json:} un simple fichero para nmp donde le indicamos el nombre de nuestro plugin, version, autor, etc. Y sobretodo, las dependencias que necesitamos que nos instale para poder utilizarlas en nuestro proyecto.
+    \item \underline{index.js:} este es el módulo principal. En él registramos nuestro plugin indicando el tipo de plugin (dentro de kibana) que es, visualización en este caso; y hacemos referencia al fichero principal.
+\end{itemize}
+
+A esto le sigue crear un nuevo directorio con el nombre “public/” que contendrá todos los ficheros de nuestro plugin (controllers, configurations, templates, etc). Antes hemos dicho que desde “index.js” hacíamos referencia a el fichero principal de nuestro plugin, pues es aquí donde lo crearemos.
+
+\begin{itemize}
+    \item \underline{public/plugin-name.js:} para el caso de las visualizaciones es donde registramos las diferentes visualizaciones, puede ser una o varias, que vamos a añadir en kibana a través de nuestro plugin.
+\end{itemize}
+
+Todos los ficheros anteriormente mencionados son los principales para el funcionamiento de esto; pero a mayores se le pueden añadir más ficheros. Algunos ejemplos opcionales:
+
+\begin{itemize}
+    \item \underline{public/plugin-name-controller.js:} como su propio nombre indica, sería el controlador de nuestro plugin. En el contiene toda la parte lógica de nuestra visualización.
+    \item \underline{public/plugin-name.html:} template del plugin.
+    \item \underline{public/plugin-name.less:} hoja de estilo del plugin.
+    \item \underline{public/options-template.html:} template para la pestaña “options” del editor.
+\end{itemize}
+
+De forma más visual, podemos decir que la estructura de ficheros para crear un plugin para kibana es la siguiente:
+
+
+\begin{lstlisting}[frame=single]
+KIBANA_HOME/plugins
+|___plugin-name
+    |___package.json
+    |___index.js
+    |___public
+        |___plugin-name.js
+        |___plugin-name-controller.js
+        |___plugin-name.html
+        |___plugin-name.less
+        |___options-template.html
+
+\end{lstlisting}
+
+
+
+%TESTEANDO BIBLIOTECA PARA LAS VISUALIZACIONES
+\subsection{Testeando Biblioteca para las Visualizacione}
+
+Al igual que necesitamos conocer el funcionamiento de kibana, también necesitamos tener unos conceptos básicos sobre los componente visuales que vamos a incorporar para nuestras visualizaciones para kibana.
+
+La opcion de usar Babiaxr ha sido muy acertada, ya que permite crear gráficas, a partir de datos proporcionados, dentro de un escenario webVR. Así que antes de nada, analizaremos lo que nos ofrece y cómo se crean.
+
+Dentro del repositorio de babiaxr podemos ver los distintos tipos de componentes que tienen creados. Dichas componentes han sido creadas a partir del framework a-frame (ver ...).
+
+Lo primero que haremos será probar los diferentes componentes que tienen: “geopiechart”, “geosimplebarchar”, “geo3dbarchart” y “geobubblechart”. Todas ellas se pueden probar desde su web.
+
+\begin{figure}[H]
+  \centering
+  \minipage{0.32\textwidth}
+  \includegraphics[width=5cm, keepaspectratio]{img/development/babiaxr-pie.png}
+  \caption{Geopiechart}
+  \label{fig:babiaxrgeopiechart}
+  \endminipage\hfill
+  \minipage{0.32\textwidth}
+  \includegraphics[width=5cm, keepaspectratio]{img/development/babiaxr-simplebar.png}
+  \caption{Geosimplebarchart}
+  \label{fig:babiaxrgeosimplebarchart}
+  \endminipage\hfill
+  \minipage{0.32\textwidth}
+  \includegraphics[width=5cm, keepaspectratio]{img/development/babiaxr-3dbar.png}
+  \caption{Geo3dbarchart}
+  \label{fig:babiaxrgeo3dbarchart}
+  \endminipage\hfill
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm, keepaspectratio]{img/development/babiaxr-bubble.png}
+  \caption{Geobubblechart}
+  \label{fig:babiaxrgeobubblechart}
+\end{figure}
+
+
+Una vez que hemos visto lo que hace, probaremos a crear nuestro propio escenario con la componente “geopiechart” con datos que le daremos de forma manual. Para ello, nos apoyaremos en la documentación que nos facilita su autor.
+
+\begin{lstlisting}[frame=single]
+<a-entity geopiechart='legend: true;
+    data: [{"key":"Andrea","size":9},{"key":"URJC","size":8},
+    {"key":"ETSIT","size":7},{"key":"kibana","size":6},
+    {"key":"elasticsearch","size":5},{"key":"Jesus","size":8},
+    {"key":"David","size":7}]'
+position="-3 5 15" rotation="90 0 0"></a-entity>
+
+\end{lstlisting}
+
+Obteniendo como resultado:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6cm, keepaspectratio]{img/development/prueba-babiaxr.png}
+  \caption{Pie Chart de Prueba}
+  \label{fig:pruebababiaxr}
+\end{figure}
+
+Con todo esto, ya podemos proceder a crear nuestro primer plugin.
+
 
 %%%%%%%%%%%
 % SPRINT 1
 %%%%%%%%%%%
 
-\section{Sprint 1: Plugins Simples }
+\section{Sprint 1: Primeros Plugins de Visualización }
 \label{sec:sprint1}
 
 %%%%%%%%%%%
@@ -562,12 +761,12 @@ Ahora que está creado todo la escena con la figura, la añadimos el contenedor 
 
 Obteniendo como resultado la siguiente visualización.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=16cm, keepaspectratio]{img/development/}
-  \caption{Esfera A-Frame con Javascript}
-  \label{fig:onlysphere}
-\end{figure}
+%\begin{figure}[H]
+  %\centering
+  %\includegraphics[width=16cm, keepaspectratio]{img/development/}
+  %\caption{Esfera A-Frame con Javascript}
+ % \label{fig:onlysphere}
+%\end{figure}
 
 Una vez hemos conseguido que nos dibuje la esfera, haremos el mismo procedimiento para crear el cubo pero con un par de variaciones:
 
