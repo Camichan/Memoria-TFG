@@ -1,0 +1,5 @@
+    visConfig: {
+      defaults: {
+        type: 'pie',
+      },
+    },

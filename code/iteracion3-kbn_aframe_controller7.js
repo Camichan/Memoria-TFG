@@ -1,0 +1,1 @@
+    let data_json = JSON.stringify(metrics);

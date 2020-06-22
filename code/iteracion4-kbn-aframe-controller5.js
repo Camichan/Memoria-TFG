@@ -1,0 +1,3 @@
+import { createChart } from './a_charts';
+    ...
+let chart = createChart(this.vis.params.type, data_json);

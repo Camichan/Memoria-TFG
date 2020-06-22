@@ -1,0 +1,1 @@
+import { VisController } from './hello-world-controller.js';

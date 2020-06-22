@@ -1,0 +1,1 @@
+visualizations.types.createBaseVisualization(simpleBarDefinition);

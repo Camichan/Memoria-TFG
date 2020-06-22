@@ -1,0 +1,3 @@
+import { getMetrics } from './metrics';
+    ...
+let metrics = getMetrics(table, this.vis.params.type);
