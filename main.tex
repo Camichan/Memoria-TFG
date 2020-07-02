@@ -142,7 +142,7 @@ Trabajo Fin de Grado
 \vspace{2.5cm}
 
 \large
-IMPLEMENTACIÓN DE UN PLUGIN DE VISUALIZACIÓN EN REALIDAD VIRTUAL EN KIBANA
+MÓDULO DE VISUALIZACIÓN DE DATOS EN REALIDAD VIRTUAL PARA KIBANA
 \vspace{4cm}
 
 \large
@@ -170,7 +170,7 @@ Tutor: Dr. Jesús María Gonzalez Barahona
 
 \vspace{1cm}
 \large
-IMPLEMENTACIÓN DE UN PLUGIN DE VISUALIZACIÓN EN REALIDAD VIRTUAL EN KIBANA
+MÓDULO DE VISUALIZACIÓN DE DATOS EN REALIDAD VIRTUAL PARA KIBANA
 
 \vspace{1cm}
 \large
@@ -262,7 +262,7 @@ The aim of this project is integrating data visualizations inside a VR environme
 
 In order to achieve this integration, we’ve developed a plugin which allows us to display data in 3D charts inside an immersive experience. This plugin can create several visualization types the same way those visualizations are created in Kibana. Visualizations can be managed using a dashboard.
 
-For the plugin development, we used the BabiaxR library using A-Frame framework. Web development languages such as Javascript, CSS and HTML are required for Kibana.
+For the plugin development, we used the BabiaXR library using A-Frame framework. Web development languages such as Javascript, CSS and HTML are required for Kibana.
 
 The plugin is hosted by Github and has been uploaded into Kibana’s community for the purpose that users can contribute with updates and improvements.
 
@@ -309,16 +309,31 @@ A primera vista, estas dos tecnologías no tienen nada que ver; pero la cosa cam
 
 Lo ideal sería que fuera accesible para cualquiera en cualquier parte. Con la llegada de los nuevos dispositivos portátiles se nos facilita la accesibilidad en cualquier parte; pero nos encontramos con la situación de que puede que nuestro dispositivo no sea compatible con el software. Para solucionar este tipo de incompatibilidades se está intentando trasladar estas herramientas al entorno web, pues prácticamente todos los dispositivos son compatibles.
 
-Ya existen herramientas como Freeboard, Manyeyes o Kibana que permiten visualizar datos a través de un navegador web. Para este proyecto utilizaremos Kibana. Esta herramienta permite monitorizar datos que proceden de Elasticsearch.
+Ya existen herramientas como Freeboard, Many Eyes o Kibana que permiten visualizar datos a través de un navegador web. Para este proyecto utilizaremos Kibana. Esta herramienta permite monitorizar datos que proceden de Elasticsearch.
 
-En cuanto a la Realidad Virtual, existe una API experimental en Javascript llamada WebVR la cual proporciona soporte a dispositivos de Realidad Virtual (HTC Vive, Oculus Rift, Google Cardboard, etc) en un navegador web. A raíz de esto se han creado muchos proyectos o frameworks que permiten desarrollar estas experiencias dentro de una página web. En este proyecto trabajaremos con A-Frame y buscaremos componentes de gráficas que se hayan creado con este framework.
+\begin{figure}[H]
+  \centering
+      \minipage{0.45\textwidth}
+      \includegraphics[height=5.5cm, keepaspectratio]{img/development/freeboard.jpg}
+      \caption{Freeboard Dashboard}
+      \label{fig:freeboard}
+      \endminipage\hfill
+      \minipage{0.45\textwidth}
+      \includegraphics[height=5.5cm, keepaspectratio]{img/development/manyeyes.png}
+      \caption{Many Eyes Dashboard}
+      \label{fig:manyeyes}
+      \endminipage\hfill
+\end{figure}
+
+
+En cuanto a la Realidad Virtual, existe una API experimental en Javascript llamada WebXR la cual proporciona soporte a dispositivos de Realidad Virtual (HTC Vive, Oculus Rift, Google Cardboard, etc) en un navegador web. A raíz de esto se han creado muchos proyectos o frameworks que permiten desarrollar estas experiencias dentro de una página web. En este proyecto trabajaremos con A-Frame y buscaremos componentes de gráficas que se hayan creado con este framework.
 
 
 
 \section{Objetivo General}
 \label{sec:objetivogeneral}
 
-El objetivo principal de este proyecto es una prueba de concepto de visualización de datos en un entorno de realidad virtual. Para ello utilizaremos una herramienta que, a pesar de estar diseñada para crear visualizaciones de datos en un sistema tradicional 2D, pueda representarlos en un sistema 3D o entorno VR.
+El objetivo principal de este proyecto es una prueba de concepto de visualización de datos en un entorno de Realidad Virtual. Para ello utilizaremos una herramienta que, a pesar de estar diseñada para crear visualizaciones de datos en un sistema tradicional 2D, permita también representarlos en un sistema 3D simulado en un entorno VR con la posibilidad de inmersión.
 
 En resumen, vamos a crear un plugin de visualización para el software Kibana que permita generar estas visualizaciones.
 
@@ -327,10 +342,11 @@ En resumen, vamos a crear un plugin de visualización para el software Kibana qu
 Antes de concretar los objetivos específicos, debemos conocer los requisitos con los que vamos a trabajar:
 
 \begin{enumerate}
+    \item \underline{Utilizar A-Frame}: para la creación de las visualizaciones en un 3D simulado con la posibilidad de inmersion en VR.
     \item \underline{Biblioteca de visualización de gráficos en VR}: para este proyecto utilizaremos la biblioteca BabiaXR.
-    \item \underline{Soporte para navegadores web}: esta biblioteca permite crear elementos VR dentro de navegadores web. 
-    \item \underline{Construcción a partir de datos}: estas visualizaciones deberán poder construirse en Kibana a partir de los datos que se le pidan a Elasticsearch.
-    
+    \item \underline{Soporte para navegadores web}: esta biblioteca permite crear elementos VR dentro de navegadores web gracias a A-Frame. 
+    \item \underline{Integrado en Kibana}: el plugin deberá estar integrado dentro del clientes de Kibana sin que éste afecte al funcionamiento original.
+    \item \underline{Construcción a partir de datos reales}: estas visualizaciones deberán poder construirse en Kibana a partir de los datos que se le pidan a Elasticsearch.
 \end{enumerate}
 
 
@@ -342,8 +358,8 @@ Para poder completar nuestro objetivo principal, deberemos completar los siguien
 \begin{enumerate}
     \item \underline{Conocer la biblioteca de visualización}: inspeccionar la biblioteca de BabiaXR para conocer su funcionamiento para, más adelante, implementarlas en el plugin.
     \item \underline{Plugin para Kibana}: conocer tanto el funcionamiento de Kibana como la creación de plugins para éste mismo. Esto incluye crear un entorno de desarrollo de este proyecto para realizar las correspondientes pruebas.
-    \item \underline{Entorno de Realidad Virtual soportado en Kibana}: antes de poder implementar cualquier tipo de componente de WebVR, debemos comprobar si lo que queremos añadir es compatible con Kibana.
-    \item \underline{Integración de la biblioteca}: en caso de que sea posible usar componentes WebVR, se deberá proceder a integrar BabiaXR dentro del plugin.
+    \item \underline{Entorno de Realidad Virtual soportado en Kibana}: antes de poder implementar cualquier tipo de componente de WebXR, debemos comprobar si lo que queremos añadir es compatible con Kibana.
+    \item \underline{Integración de la biblioteca}: en caso de que sea posible usar componentes WebXR, se deberá proceder a integrar BabiaXR dentro del plugin.
     \item \underline{Múltiples visualizaciones}: el plugin será una colección de visualizaciones con diferentes tipos de gráficas para representar los datos.
     \item \underline{Integración a una Dashboard}: no solo nos bastará con poder visualizarlas, sino que nos interesará poder guardarlas y que se puedan introducir dentro de una dashboard para poder monitorizar varios elementos a la vez.
     \item \underline{Accesibilidad}: una vez que se termine el proyecto, se facilitará la accesibilidad a cualquier usuario que desee utilizarlo o contribuir en su mejora. Para ello se facilitará una web y se hospedará en alguna plataforma. Además se creará una guía de usuario y se registrará el plugin en la comunidad de Kibana.
@@ -380,8 +396,10 @@ Repositorio Github: \url{https://github.com/Camichan/kbn_aframe}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
-\chapter{Estudio del Arte}
+\chapter{Trabajos Previos y Tecnologías Utilizadas}
 \label{sec:estudioarte} %etiqueta para referenciar luego 
+
+En este capítulo se definen las diferentes tecnologías que se han utilizado a lo largo de este proyecto y el papel que han desempeñado en él.
 
 % motivaciones y hablar sobre las herramientas
 
@@ -393,7 +411,7 @@ Repositorio Github: \url{https://github.com/Camichan/kbn_aframe}
 \label{sec:html5}
 \subsection{Definición}
 
-Es la quinta versión principal de HTML \cite{pilgrim:_html5guide}, un lenguaje de etiquetas (también llamado lenguaje de marcado) para la elaboración de páginas web. Las siglas vienen de HyperText Markup Language y la versión definitiva se publicó en octubre de 2014. Cada etiqueta es un elemento que puede tener atributos y contenido. Estas etiquetas pueden ser de apertura ej: <body>, o cierre </body>. El estándar está a cargo del consorcio W3C (World Wide Web Consortium) o WWW. Todos los navegadores actuales han adpotado este lenguaje para la visualización de páginas web. En HTML5 existen la variante “clásica” de sintaxis para HTML (text/html) y la sintaxis XHTML (application/xhtml+xml), que se han desarrollado en paralelo.
+Es la quinta versión principal de HTML \cite{pilgrim:_html5guide}, un lenguaje de etiquetas (también llamado lenguaje de marcado) para la elaboración de páginas web. Las siglas vienen de HyperText Markup Language y la versión definitiva se publicó en octubre de 2014. Cada etiqueta es un elemento que puede tener atributos y contenido. Estas etiquetas pueden ser de apertura ej: \verb|<body>|, o cierre \verb|</body>|. El estándar está a cargo del consorcio W3C (World Wide Web Consortium) o WWW. Todos los navegadores actuales han adpotado este lenguaje para la visualización de páginas web. 
 
 \subsection{En este proyecto}
 
@@ -408,11 +426,11 @@ Al tratarse de un proyecto para su uso en navegadores web, es impensable no util
 \label{sec:css}
 \subsection{Definición}
 
-Sus siglas vienen de \textit{“Cascading Style Sheets”} (hojas de estilo en cascada)\cite{gasston:_cssguide}. Es un lenguaje utilizado para definir la presentación visual de los elementos en una página web. CSS nos permite por tanto modificar la apariencia por defecto de las etiquetas HTML. También permite crear identificadores, clases y selectores que recojan un conjunto de reglas, luego podremos aplicar dicha clase al elemento (o elementos) que queramos. El estándar CSS también es mantenido por el consorcio W3C y es compatible con toos los navegadores web modernos.
+Sus siglas vienen de \textit{“Cascading Style Sheets”} (hojas de estilo en cascada)\cite{gasston:_cssguide} \footnote{\url{https://www.w3schools.com/css/default.asp}}. Es un lenguaje utilizado para definir la presentación visual de los elementos en una página web. CSS nos permite por tanto modificar la apariencia por defecto de las etiquetas HTML. También permite crear identificadores, clases y selectores que recojan un conjunto de reglas, luego podremos aplicar dicha clase al elemento (o elementos) que queramos. El estándar CSS también es mantenido por el consorcio W3C y es compatible con toos los navegadores web modernos.
 
 \subsection{En este proyecto}
 
-El uso de este lenguaje viene dado en caso de que necesitemos definir algún estilo dentro de nuestras visualizaciones\footnote{\url{https://www.w3schools.com/css/default.asp}}.
+El uso de este lenguaje se dió definir que el elemento de la visualización no se salga del espacio reservado para él.
 
 %%%%%%%%%%%%%%%
 %JAVASCRIPT
@@ -425,7 +443,7 @@ Es un lenguaje de programación orientado a objetos \cite{flanagan:_jsguide}, li
 
 \subsection{En este proyecto}
 
-La mayor parte de este proyecto está desarrollado en este lenguaje. Además, todas las bibliotecas que utilizamos están escritas en JavaScript\footnote{\url{https://www.w3schools.com/js/default.asp}}.
+La mayor parte de este proyecto está desarrollado en este lenguaje. Además, todas las bibliotecas que utilizamos están escritas en JavaScript\footnote{\url{https://www.w3schools.com/js/default.asp}}. Se ha utilizado el estándar ECMAScript 6 (ES6) y la API de WebVR que viene integrado en Javascript que permite crear elementos VR dentro del navegador.
 
 %%%%%%%%%%%%%%%%
 %AFRAME
@@ -446,8 +464,8 @@ Además, gracias a dispositivos de tracking y controladores de posición, permit
 
 \item \underline{Declaraciones en HTML}: Al estar basado en HTML es muy f\'acil de usar ya seas desarrollador web, amante del VR, artista, diseñador, educador o niño.
 \item \underline{VR Multiplataforma}: Permite usar los diferentes dispositivos con sus respectivos controladores. En caso de no disponer de ninguno, también se puede usar en portátiles, tablets o teléfonos  móviles.
-\item \underline{Arquitectura Entity-Component}: A-Frame es un poderoso framework donde se provee de una poderosa estructura entity-component. Al tratarse de HTML, los desarrolladores tienen acceso ilimitado a javascript, DOM API, three.js, WebVR y WebGL.
-\item \underline{Rendimiento}: A-Frame está optimizado desde cero para WebVR. Como A-Frame usa el DOM, sus elementos no tocan el motor del navegador. Los objetos 3D se actualizan en la memoria con una sola llamada \textit{requestAnimationFrame}.
+\item \underline{Arquitectura Entity-Component}: A-Frame es un poderoso framework donde se provee de una poderosa estructura entity-component. Al tratarse de HTML, los desarrolladores tienen acceso ilimitado a javascript, DOM API, three.js, WebXR y WebGL.
+\item \underline{Rendimiento}: A-Frame está optimizado desde cero para WebXR. Como A-Frame usa el DOM, sus elementos no tocan el motor del navegador. Los objetos 3D se actualizan en la memoria con una sola llamada \textit{requestAnimationFrame}.
 \item \underline{Tool Agnostic}: Como la web se crea en HTML, A-Frame es compatible con la mayoría de las bibliotecas y herramientas web tales como React, Preact, Vue.js, d3,js, Ember.js y jQuery.
 \item \underline{Inspector Visual}: A-Frame proporciona un visor 3D incorporado. En la que permite abrir la escena 3D y modificar algunos de sus elementos.
 \item \underline{Registro}: Al igual que Unity Assets Store, A-Frame recopila componentes para que los desarrolladores puedan publicar y buscarlos de forma sencilla.
@@ -505,7 +523,7 @@ Está escrito en Java, de código abierto y generalmente utilizado con fines emp
 \begin{itemize}
 \item \underline{Documentos}: está orientado a documentos que se insertan en formato JSON, son esquemas sin indexar. Lo que permite una búsqueda mucho mas rápida.
 \item \underline{API}: cuenta con una potente API muy fácil de usar. Ésta permite hacer peticiones de tipo HTTP.
-\item \underline{Rapidez}: Gracias a su distribución de escalado dinámico; elasticsearch encuentra rápidamente cualquier consulta que se le haga, incluso cuando tenemos grandes cantidades de datos. Ya sean búsquedas simples, como complejas.
+\item \underline{Rapidez}: Gracias a su distribución de escalado dinámico; Elasticsearch encuentra rápidamente cualquier consulta que se le haga, incluso cuando tenemos grandes cantidades de datos. Ya sean búsquedas simples, como complejas.
 \item \underline{Gran componente}: Elasticsearch junto con Kibana y Logstash forman un conjunto de herramientas perfecta para la recopilación, análisis y visualización de datos.
 \item \underline{En tiempo real}: Las actualizaciones de los índices de Elasticsearch se realizan de manera tan rápida que práticamente se puede consultar en tiempo real.
 \end{itemize}
@@ -514,7 +532,7 @@ Para este proyecto, no es una parte importante; pues solo la utilizaremos para i
 
 
 \subsection{Logstash}
-Es la herramienta encargada de recolectar los logs de una aplicación, parsearlos; traducirlos y pasarlos a formato JSON para luego poder almacenarla en elasticsearch. 
+Es la herramienta encargada de recolectar los logs de una aplicación, parsearlos; traducirlos y pasarlos a formato JSON para luego poder almacenarla en Elasticsearch. 
 
 \subsubsection{En este proyecto}
 Esta parte no la utilizaremos en este proyecto en ningún momento.
@@ -526,12 +544,12 @@ Esta parte no la utilizaremos en este proyecto en ningún momento.
 \section{Kibana}
 \label{sec:Kibana}
 \subsection{Definición}
-Es una plataforma que permite visualizar los datos almacenados en elasticsearch, para su posterior monitorización y análisis de estos desde el propio navegador web\cite{srivastaba:_kibanaguide}.
+Es una plataforma que permite visualizar los datos almacenados en Elasticsearch, para su posterior monitorización y análisis de estos desde el propio navegador web\cite{srivastaba:_kibanaguide}.
 
 Al tratarse de código abierto, la propia empresa invita a que desarrolladores puedan contribuir con su mejoría o a la creación, como en nuestro caso, de plugins para personalizarlos al gusto del usuario. 
 \subsubsection{Características}
 \begin{itemize}
-\item \underline{Visualizaciones}: podemos encontrar representaciones con histogramas, gráficas de tiempo, roscos o tablas que nos permite visualizar e interactuar con los datos almacenados en elasticsearch.
+\item \underline{Visualizaciones}: podemos encontrar representaciones con histogramas, gráficas de tiempo, roscos o tablas que nos permite visualizar e interactuar con los datos almacenados en Elasticsearch.
 \item \underline{Datos en tiempo real}: la buena conectividad entre ellos, permite visualizar y buscar la información unos pocos segundos después de ser introducida en Elasticsearch.
 \item \underline{Dashboards}: que recogen las visualizaciones en paneles para poder tener una vista global y así poder entender mejor grandes cantidades de datos.
 \item \underline{Geolocalización}: en caso de tener datos de ubicaciones; ésta te muestras las distintas coordenadas en mapas.
@@ -565,6 +583,8 @@ NPM, también llamado \textit{Node Package Manager}\footnote{\url{https://docs.n
 \subsection{En este proyecto}
 
 NPM lo utilizamos para instalar todas las dependencias que necesitamos para añadirlas en nuestro código. Esto se hace desde el archivo \textit{package.json} y se instalan usando el comando \textit{``npm install"}, guardandose dentro el directorio \textit{node\_module}.
+
+En cuanto a NodeJS, se utiliza para lanzar el cliente de Kibana y el servidor de Elasticsearch que viene dentro del entorno de desarrollo.
 
 %%%%%%%%%%%%%%%
 %BABIAXR
@@ -606,6 +626,8 @@ Es otra de la partes importantes de este desarrollo, pues es la biblioteca que u
 \chapter{Desarrollo}
 \label{sec:desarrollo} 
 
+En este capítulo se describe cómo se ha organizado este proyecto y qué se ha desarrollado en cada una de sus iteraciones. En ellas se mostrará también los trozos de código e imágenes resultantes.
+
 %%%%%%%%%%%%%%%%%%%
 % METODOLOGIA SCRUM
 %%%%%%%%%%%%%%%%%%%
@@ -613,7 +635,7 @@ Es otra de la partes importantes de este desarrollo, pues es la biblioteca que u
 \section{Metodología SCRUM}
 \label{sec:scrum}
 
-Para el desarrollo de este proyecto nos hemos organizado usando una versión modelada de la metodología SCRUM\cite{sutherland:scrum}. La metodología SCRUM\footnote{\url{https://www.scrum.org/resources/blog/que-es-scrum}} es un marco de trabajo que se utiliza dentro del desarrollo ágil de software. 
+ Para el desarrollo de este proyecto nos hemos organizado usando una versión inspirada en la metodología SCRUM\cite{sutherland:scrum}. La metodología SCRUM\footnote{\url{https://www.scrum.org/resources/blog/que-es-scrum}} es un marco de trabajo que se utiliza dentro del desarrollo ágil de software. 
 
 A diferencia de otros métodos donde el desarrollo va de manera secuencia o el cascada, SCRUM permite desarrollar en pequeñas fases que van incrementando hasta llegar al objetivo final. Esto permite analizar cada fase y reorganizar, en caso de que sea necesario, durante el proceso. 
 
@@ -657,7 +679,7 @@ Partiendo de esto, describiremos brevemente cada uno de los sprints o iteracione
 \begin{itemize}
     \item \underline{Iteración 0}: Investigación y estudio preliminar de las herramientas con las que vamos a trabajar.
     \item \underline{Iteración 1}: Creación de los primeros plugins sin usar datos, implementación de A-Frame y creación de un componente A-Frame.
-    \item \underline{Iteración 2}: Modificación del plugin anterior para crear visualizaciones a partir de datos de elasticsearch.
+    \item \underline{Iteración 2}: Modificación del plugin anterior para crear visualizaciones a partir de datos de Elasticsearch.
     \item \underline{Iteración 3}: Integración de un componente de la biblioteca BabiaXR dentro de Kibana.
     \item \underline{Iteración 4}: Añadir nuevas visualizaciónes con el resto de componentes de BabiaXR.
 \end{itemize}
@@ -680,13 +702,13 @@ Por último, exploraremos un poco con la biblioteca BabiaXR para conocer su func
 
 
 %TESTEANDO CLIENTE Kibana
-\subsection{Testeando Cliente de Kibana}
+\subsection{Explorando el Cliente de Kibana}
 
-Como se ha mencionado antes, lo primero que haremos será testear el cliente de Kibana. Lo que haremos será instalar un elasticsearch, que usaremos para que nos proporcione los datos; y un cliente de Kibana para que exploremos su funcionamiento.
+Como se ha mencionado antes, lo primero que haremos será explorar el cliente de Kibana. Lo que haremos será instalar un Elasticsearch, que usaremos para que nos proporcione los datos; y un cliente de Kibana para que exploremos su funcionamiento.
 
 Estas dos herramientas se pueden conseguir de forma gratuita en la web oficial de Elastic\footnote{\url{https://www.elastic.co/es/downloads}}. Descargamos las últimas versiones oficiales (\textit{versión 7.6}) y las instalamos en el propio equipo. Un dato a tener en cuenta es que ambos deben ser de la misma versión, sino no funcionará (o no funcionará correctamente). Para una primera vez, lo mejor es no tocar la configuración de ninguno de los dos programas.
 
-Anteriormente se mencionó que Kibana era una manera de monitorizar los datos recopilados en elasticsearch, pero aunque no tengamos ninguna base de datos en elasticsearch, Kibana nos permitirá descargar unas bases de datos de prueba para que podamos utilizarlo en nuestro testeo. Para esta ocasión utilizaremos la base de datos de eCommerce.
+Anteriormente se mencionó que Kibana era una manera de monitorizar los datos recopilados en Elasticsearch, pero aunque no tengamos ninguna base de datos en Elasticsearch, Kibana nos permitirá descargar unas bases de datos de prueba para que podamos utilizarlo en esta primera exploración. Para esta ocasión utilizaremos la base de datos de eCommerce.
 
 Lo primero que nos encontramos es la pestaña \textit{Discover} que nos muestra una lista de todos los items que hay en la base de datos (en este caso, las ventas que se han realizado). A la izquierda, tenemos un editor que nos permite filtrar los campos que queremos que aparezca en el listado. Además, en la parte de arriba, justo encima de la tabla de datos, hay una gráfica que nos muestra una visualización gráfica de los datos que hemos filtrado, para esta ocasión el número de ventas que se realizan a lo largo del día.
 
@@ -744,13 +766,13 @@ Para entenderlo bien, la dashboard nos muestra en una misma página todas las vi
 
 Ahora que ya entendemos un poco el funcionamiento del cliente de Kibana, pasaremos a crearnos el entorno de desarrollo que utilizaremos para crear nuestro plugin. Este nos permitirá ver en tiempo real los cambios que realicemos.
 
-Siguiendo las indicaciones que podemos encontrar en la sección correspondiente para contribuir en el proyecto \textit{CONTRIBUTING.md}\footnote{\url{https://github.com/elastic/Kibana/blob/master/CONTRIBUTING.md}} dentro del repositorio de Kibana.
+Siguiendo las indicaciones que podemos encontrar en la sección correspondiente para contribuir en el proyecto \textit{CONTRIBUTING.md}\footnote{\url{https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md}} dentro del repositorio de Kibana.
 
-Una vez tengamos creado nuestro entorno de desarrollo, pasaremos a documentarnos cómo se crean plugins para Kibana. Para ello, Elastic nos proporciona artículos en su blog de como crear unos plugins básicos \footnote{\url{https://www.elastic.co/es/blog/developing-new-Kibana-visualizations}}. Aunque está un poco obsoleta la documentación, únicamente nos quedaremos con la parte de cómo es la estructura de ficheros.
+Una vez tengamos creado nuestro entorno de desarrollo, pasaremos a documentarnos cómo se crean plugins para Kibana. Para ello, Elastic nos proporciona artículos en su blog de como crear unos plugins básicos \footnote{\url{https://www.elastic.co/es/blog/developing-new-kibana-visualizations}}. Aunque está un poco obsoleta la documentación, únicamente nos quedaremos con la parte de cómo es la estructura de ficheros.
 
 Por el momento no vamos a detallar el contenido de los ficheros (lo explicaremos más adelante en \ref{sec:holamundo}), simplemente nos enfocaremos en qué función tiene cada uno.
 
-Lo primero que haremos será crear un directorio con en nombre de nuestro plugin dentro del directorio \textit{Kibana\_HOME/plugins}. Y crearemos los siguientes ficheros:
+Lo primero que haremos será crear un directorio con en nombre de nuestro plugin dentro del directorio \textit{KIBANA\_HOME/plugins}. Y crearemos los siguientes ficheros:
 
 \begin{itemize}
     \item \underline{package.json}: un simple fichero para npm donde le indicamos el nombre de nuestro plugin, version, autor, etc. Y sobretodo, las dependencias que necesitamos que nos instale para poder utilizarlas en nuestro proyecto.
@@ -789,13 +811,13 @@ Kibana_HOME/plugins/
 
 
 %TESTEANDO BIBLIOTECA PARA LAS VISUALIZACIONES
-\subsection{Testeando Biblioteca para las Visualizacione}
+\subsection{Explorando la Biblioteca para las Visualizaciones}
 
 Al igual que necesitamos conocer el funcionamiento de Kibana, también necesitamos tener unos conceptos básicos sobre los componente visuales que vamos a incorporar para nuestras visualizaciones para Kibana.
 
-La opcion de usar Babiaxr ha sido muy acertada, ya que permite crear gráficas, a partir de datos proporcionados, dentro de un escenario webVR. Así que antes de nada, analizaremos lo que nos ofrece y cómo se crean.
+La opcion de usar BabiaXR ha sido muy acertada, ya que permite crear gráficas, a partir de datos proporcionados, dentro de un escenario WebXR. Así que antes de nada, analizaremos lo que nos ofrece y cómo se crean.
 
-Dentro del repositorio de babiaxr podemos ver los distintos tipos de componentes que tienen creados. Dichas componentes han sido creadas a partir del framework A-Frame (cápitulo \ref{sec:aframe}).
+Dentro del repositorio de BabiaXR podemos ver los distintos tipos de componentes que tienen creados. Dichas componentes han sido creadas a partir del framework A-Frame (cápitulo \ref{sec:aframe}).
 
 Lo primero que haremos será probar los diferentes componentes que tienen: \textit{geopiechart}, \textit{geosimplebarchart}, \textit{geo3dbarchart} y \textit{geobubblechart}. Todas ellas se pueden probar desde su web.
 
@@ -871,7 +893,7 @@ Parámetros utilizados:
 \begin{itemize}
     \item \underline{name}: nombre del plugin.
     \item \underline{version}: versión de nuestro plugin.
-    \item \underline{Kibana}: versión de Kibana.
+    \item \underline{kibana}: versión de Kibana.
 \end{itemize}
 
 Como solo es una versión de prueba, únicamente indicaremos el nombre del plugin, la versión y para que version de Kibana es. Esta última se debe indicar bien, sino no funcionará. Por eso, como estamos desarrollando para la version 7.6, esto tiene que venir reflejado en nuestro \textit{package.json}. En esta ocasión, al ser un simple \textit{hola-mundo} no necesitaremos instalar ninguna dependencia.
@@ -890,8 +912,8 @@ Una vez dentro de \textit{vis\_Types} indicaremos el directorio donde se encuent
 
 Lo primero que haremos será importar el paquete dentro de Kibana que nos permitirá registrar nuestra visualización. Debido a la migración que se está realizando en Kibana, la documentación que facilitaban y cualquier otro tutorial estaban obsoletos. Por lo que se tuvo que realizar una extensa búsqueda entre el repositorio de Kibana en Github y sus issues para ver cómo era la nueva forma de registrar las visualización. 
 
-Al final, la mejor forma de averiguarlo fue inspeccionar dentro del código de Kibana y ver cómo registraban las visualizaciones que vienen de forma predeterminada en el cliente de Kibana. Esta se encuentra en el fichero \textit{Kibana/src/legacy/core\_plugins/kbn\_vislib\_vis\_types/public/
-kbn\_vislib\_vis\_types.js}\footnote{\url{https://github.com/elastic/Kibana/blob/7.6}}, y la usaremos de base para la forma de registrar nuestras futuras visualizaciones.
+Al final, la mejor forma de averiguarlo fue inspeccionar dentro del código de Kibana y ver cómo registraban las visualizaciones que vienen de forma predeterminada en el cliente de Kibana. Esta se encuentra en el fichero \textit{kibana/src/legacy/core\_plugins/kbn\_vislib\_vis\_types/public/
+kbn\_vislib\_vis\_types.js}\footnote{\url{https://github.com/elastic/kibana/blob/7.6}}, y la usaremos de base para la forma de registrar nuestras futuras visualizaciones.
 
 Con esto, ya podemos importar el paquete que nos permitirá registrar la visualización:
 
@@ -994,7 +1016,7 @@ Una vez que hemos descargado e instalado el módulo de A-Frame, lo declaramos en
 Y modificamos el HTML del template \textit{index.html} para que dibuje un cubo con A-Frame. Para ello, debemos conocer al menos estas dos etiquetas: 
 
 \begin{itemize}
-    \item \underline{a-scene}: permite manejar elementos creados con THREE.js y WebVR. Todos estos elementos deben estar contenido en esta etiqueta, sino no funcionará. Salvo que se le declare, creará por defecto la cámara y las luces.
+    \item \underline{a-scene}: permite manejar elementos creados con THREE.js y WebXR. Todos estos elementos deben estar contenido en esta etiqueta, sino no funcionará. Salvo que se le declare, creará por defecto la cámara y las luces.
     \item \underline{a-box}: crea un componente cubo en 3D según los atributos que le indiquemos.
 \end{itemize}
 
@@ -1035,7 +1057,7 @@ Comenzaremos creando la función \textit{init()}:
 
 Esta función inicializa la geometría, material y malla del componente a partir de los parámetros que recibe cuando se declaran en el HTML. Para luego renderizar la figura inicializada.
 
-La función \textit{update()} se ejecutará cuando algún dato cambia. En este caso no lo vamos a necesitar pero como más adelante vamos a extraer datos de elasticsearch para modificar el componente, lo creamos.
+La función \textit{update()} se ejecutará cuando algún dato cambia. En este caso no lo vamos a necesitar pero como más adelante vamos a extraer datos de Elasticsearch para modificar el componente, lo creamos.
 
 \lstinputlisting[language=Javascript]{code/iteracion1-box3.js}
 
@@ -1156,11 +1178,11 @@ Con esto podremos ver que datos recibimos en la consola del navegador.
   \label{fig:visData}
 \end{figure}
 
-Esto nos sirve para analizar en cómo es el formato de los datos recibidos de elasticsearch, para luego extraer los datos que nos interesa mostrar. 
+Esto nos sirve para analizar en cómo es el formato de los datos recibidos de Elasticsearch, para luego extraer los datos que nos interesa mostrar. 
 
 En primer lugar, vemos que se divide en 3 registros: 
 \begin{itemize}
-    \item \underline{type}: tipo del archivo. En este caso, Kibana\_datatable.
+    \item \underline{type}: tipo del archivo. En este caso, kibana\_datatable.
     \item \underline{rows}: contiene únicamente los datos obtenidos en formato registro en la que la clave con la forma \textit{col-X-X} que indica la posición; y el valor con el dato obtenido.
     \item \underline{columns}: contiene las etiquetas que hacen referencia a los datos obtenidos. Vienen en forma de array de registros, donde \textit{id} indica la posición del dato; y \textit{name} indica el nombre del valor. 
 \end{itemize}
@@ -1233,7 +1255,7 @@ Una vez hemos conseguido que nos dibuje la esfera, haremos el mismo procedimient
 
 \begin{enumerate}
     \item Usaremos el cubo que creamos por componente.
-    \item Añadiremos los datos obtenidos de elasticsearch.
+    \item Añadiremos los datos obtenidos de Elasticsearch.
 \end{enumerate}
 
 Como usaremos el componente, revisaremos que \textit{box.js} este importado en el controlador.
@@ -1341,7 +1363,7 @@ Según esto construiremos los datos de la siguiente manera:
 
 \lstinputlisting[language=Javascript]{code/iteracion3-kbn_aframe_controller3.js}
 
-Y procedemos a crear tal y como nos lo indica la documentación de babiaxr\footnote{\url{https://github.com/dlumbrer/aframe-babia-components#data-format}}.
+Y procedemos a crear tal y como nos lo indica la documentación de BabiaXR\footnote{\url{https://github.com/dlumbrer/aframe-babia-components#data-format}}.
 
 \lstinputlisting[language=Javascript]{code/iteracion3-kbn_aframe_controller4.js}
 
@@ -1595,10 +1617,9 @@ Y tras haber añadido el último de los componente que hay actualmente en BabiaX
 \chapter{Diseño y Resultados}
 \label{sec:resultados} 
 
-\section{Introducción}
-\label{sec:resultadointro}
+En este capítulo describiremos los resultados obtenidos al final del proyecto. Primero definiremos la arquitectura resultante del proyecto; y terminaremos con una guia de usuario donde explicaremos su uso mediante un caso hipotético. 
 
-En este capítulo describiremos los resultados obtenidos al final del proyecto. Primero definiremos la arquitectura resultante del proyecto; y terminaremos con una guia de usuario donde explicaremos su uso mediante un caso hipotético.
+Para no repetir, se ha omitido el resultado de cada una de las visualizaciones (tal y como se mostró a lo largo de las últimas iteraciones del capítulo \ref{sec:desarrollo} ); y únicamente se explica cómo se crean en la guia de usuario. 
 
 \section{Arquitectura General}
 \label{sec:arquitectura}
@@ -1640,6 +1661,9 @@ Dentro de este directorio nos encontramos con los siguientes ficheros:
     \item \underline{a\_charts.js}: esta parte se encarga de crear la gráfica a partir de los datos recibidos, en función de la visualización elegida.
     \item \underline{aframe.less}: contiene el estilo que le damos a la visualización.
 \end{itemize}
+
+Con esta arquitectura conseguimos que Kibana se encargue de proveer el marco de la visualización y de crear el editor en función de lo que le hayamos definido; y el plugin se encarga de representar los datos obtenidos mediante dicho editor.
+
 
 \section{Guia de Usuario}
 \label{sec:guiausuario}
@@ -1817,9 +1841,14 @@ Se ha creado un plugin para Kibana que crea visualizaciones, a partir de datos o
 
 Centrándonos en el plugin, este cuenta con varios tipos de visualizaciones que se asemejan a las visualizaciones predeterminadas de Kibana. Además, se pueden añadir a una dashboard que vienen integrada dentro del propio Kibana.
 
-Por último nos centramos en la distribución. A día de hoy se ha añadido el plugin actualizado en su última versión, compatible con la versión 7.5 de Kibana, en github y se ha procedido a incluirla dentro de la comunidad para que puedan colaborar en futuras mejoras para este proyecto. Además, también se ha creado una versión para Kibana 7.4.2 que es compatible para usarlo con la última versión de Opendistro for Elasticsearch.
+La construcción de cada visualización está pensada para que cualquier usuario que conozca Kibana no necesite aprender a utilizarla, ya que han sido desarrolladas replicando el funcionamiento de las predeterminadas.
 
-En conclusión, podemos decir que, en su gran mayoría, hemos cumplido con todos lo objetivos propuestos. Sin dejar de lado el único objetivo que no hemos mencionado, pero que es más importante que todo lo anterior: el haber obtenido todos los conocimientos adquiridos en este proceso.
+Actualmente, no he encontrado otras herramientas que permitan elegir si se desea representar datos en 2D o en 3D con la posibilidad de inmersión en VR. Todo lo que he encontrado se centra solo en un único modo de representación.
+
+Por último nos centramos en la distribución. A día de hoy se ha añadido el plugin actualizado en su última versión, compatible con la versión 7.6 de Kibana, en Github y se ha procedido a incluirla dentro de la comunidad para que puedan colaborar en futuras mejoras para este proyecto. Además, también se ha creado una versión para Kibana 7.4.2 que es compatible para usarlo con la última versión de Opendistro for Elasticsearch. Estos instaladores se han preparado para que la instalación sea lo más sencilla posible.
+
+
+En conclusión, podemos decir que se ha cumplido con todos lo objetivos propuestos. Sin dejar de lado el único objetivo que no hemos mencionado, pero que es más importante que todo lo anterior: el haber obtenido todos los conocimientos adquiridos en este proceso.
 
 
 \section{Aplicación de lo aprendido}
@@ -1839,12 +1868,12 @@ Por último, mencionar que también se poseían unos conocimientos en relación 
 Durante todo el proceso de creación de este proyecto he adquirido los siguientes conocimientos:
 
 \begin{itemize}
-    \item Aumentar mis conocimientos en cuanto a lenguajes para la programación web.
-    \item Aprender a usar el funcionamiento de la herramienta Kibana y cómo crear plugins de visualización para ésta.
+    \item Aumentar mis conocimientos en cuanto a lenguajes para la programación web tanto en la parte back-end como front-end.
+    \item Aprender el funcionamiento de la herramienta Kibana y cómo crear plugins de visualización para ésta. Esto engloba también la creación de un entorno de desarrollo y lanzar servidores de prueba durante el desarrollo.
     \item Trabajar usando una metodología para el desarrollo ágil de proyectos.
-    \item Aprender a usar nuevas tecnologías para la creación de elementos en entornos de Realidad Virtual.
+    \item Aprender a usar nuevas tecnologías para la creación de elementos en entornos de Realidad Virtual como es el caso de A-Frame.
     \item Trabajar usando datos reales obtenidos de Elasticsearch.
-    \item A usar Latex para la redacción de esta memoria. 
+    \item A usar \LaTeX  para la redacción de esta memoria. 
     \item Mejorar el uso de Git para gestionar proyectos alojados en Github.
 \end{itemize}
 
